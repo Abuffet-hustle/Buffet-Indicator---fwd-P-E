@@ -91,10 +91,13 @@ const rightAxis = [
 ];
 
 Plotly.newPlot("chart", [...leftAxis, ...rightAxis], {
+
   paper_bgcolor: "#0b0f19",
   plot_bgcolor: "#0b0f19",
 
-  title: "Macro Dual-Axis Finance Dashboard",
+  title: {
+    text: "Macro Dual-Axis Finance Dashboard"
+  },
 
   xaxis: {
     title: "Year",
@@ -102,19 +105,109 @@ Plotly.newPlot("chart", [...leftAxis, ...rightAxis], {
   },
 
   yaxis: {
-    title: "Valuation / Liquidity (Scaled Index)",
-    gridcolor: "#222"
+    title: "Valuation / Liquidity",
+    gridcolor: "#222",
+    zeroline: false
   },
 
   yaxis2: {
     title: "Rates / Returns (%)",
     overlaying: "y",
-    side: "right"
+    side: "right",
+    zeroline: false
   },
 
   legend: {
-    orientation: "h"
-  }
+    orientation: "h",
+    y: -0.15
+  },
+
+  updatemenus: [
+    {
+      type: "dropdown",
+
+      buttons: [
+
+        {
+          label: "Show All",
+          method: "update",
+          args: [{
+            visible: [true,true,true,true,true]
+          }]
+        },
+
+        {
+          label: "Buffett Only",
+          method: "update",
+          args: [{
+            visible: [true,false,false,false,false]
+          }]
+        },
+
+        {
+          label: "Forward P/E Only",
+          method: "update",
+          args: [{
+            visible: [false,true,false,false,false]
+          }]
+        },
+
+        {
+          label: "Debt Growth Only",
+          method: "update",
+          args: [{
+            visible: [false,false,true,false,false]
+          }]
+        },
+
+        {
+          label: "10Y Yield Only",
+          method: "update",
+          args: [{
+            visible: [false,false,false,true,false]
+          }]
+        },
+
+        {
+          label: "S&P Returns Only",
+          method: "update",
+          args: [{
+            visible: [false,false,false,false,true]
+          }]
+        },
+
+        {
+          label: "Valuation Metrics",
+          method: "update",
+          args: [{
+            visible: [true,true,false,false,false]
+          }]
+        },
+
+        {
+          label: "Liquidity Metrics",
+          method: "update",
+          args: [{
+            visible: [false,false,true,true,false]
+          }]
+        }
+
+      ],
+
+      direction: "down",
+
+      showactive: true,
+
+      x: 0.01,
+      y: 1.18,
+
+      xanchor: "left",
+      yanchor: "top"
+    }
+  ]
+
+}, {
+  responsive: true
 });
 
 </script>
