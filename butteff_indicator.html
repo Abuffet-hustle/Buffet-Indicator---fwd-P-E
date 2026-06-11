@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Macro Dual-Axis Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+</head>
+
+<body style="margin:0;background:#0b0f19;font-family:Arial;color:white;">
+<div id="chart" style="width:100vw;height:100vh;"></div>
+
+<script>
+
+const data = [
+  {year:1998,buffett10:12.5,forwardPE:22,yield10y:5.3,debtGrowth:3,sp500:28.6},
+  {year:1999,buffett10:13.5,forwardPE:25,yield10y:5.5,debtGrowth:2,sp500:21},
+  {year:2000,buffett10:14.5,forwardPE:25,yield10y:6.0,debtGrowth:1,sp500:-9},
+  {year:2001,buffett10:12.0,forwardPE:20,yield10y:5.0,debtGrowth:6,sp500:-12},
+  {year:2002,buffett10:8.5,forwardPE:17,yield10y:4.6,debtGrowth:7,sp500:-22},
+  {year:2003,buffett10:9.5,forwardPE:18,yield10y:4.0,debtGrowth:8,sp500:28},
+  {year:2004,buffett10:10.5,forwardPE:16,yield10y:4.3,debtGrowth:8,sp500:10},
+  {year:2005,buffett10:10.8,forwardPE:15,yield10y:4.5,debtGrowth:6,sp500:4},
+  {year:2006,buffett10:11.0,forwardPE:15,yield10y:4.7,debtGrowth:5,sp500:15},
+  {year:2007,buffett10:11.0,forwardPE:15,yield10y:4.7,debtGrowth:5,sp500:5},
+  {year:2008,buffett10:8.0,forwardPE:12,yield10y:3.7,debtGrowth:12,sp500:-37},
+  {year:2009,buffett10:7.5,forwardPE:12,yield10y:3.3,debtGrowth:19,sp500:26},
+  {year:2010,buffett10:8.5,forwardPE:13,yield10y:3.2,debtGrowth:10,sp500:15},
+  {year:2011,buffett10:9.5,forwardPE:12,yield10y:2.0,debtGrowth:10,sp500:2},
+  {year:2012,buffett10:10.5,forwardPE:13,yield10y:1.8,debtGrowth:5,sp500:16},
+  {year:2013,buffett10:11.5,forwardPE:15,yield10y:3.0,debtGrowth:4,sp500:32},
+  {year:2014,buffett10:12.0,forwardPE:16,yield10y:2.5,debtGrowth:3,sp500:14},
+  {year:2015,buffett10:12.5,forwardPE:17,yield10y:2.3,debtGrowth:2,sp500:1},
+  {year:2016,buffett10:13.0,forwardPE:18,yield10y:2.1,debtGrowth:4,sp500:12},
+  {year:2017,buffett10:14.5,forwardPE:18,yield10y:2.4,debtGrowth:3,sp500:21},
+  {year:2018,buffett10:13.5,forwardPE:17,yield10y:2.9,debtGrowth:6,sp500:-4},
+  {year:2019,buffett10:15.0,forwardPE:17,yield10y:2.1,debtGrowth:6,sp500:31},
+  {year:2020,buffett10:18.0,forwardPE:20,yield10y:0.9,debtGrowth:20,sp500:18},
+  {year:2021,buffett10:21.0,forwardPE:22,yield10y:1.5,debtGrowth:27,sp500:27},
+  {year:2022,buffett10:17.0,forwardPE:16,yield10y:3.9,debtGrowth:3,sp500:-19},
+  {year:2023,buffett10:18.0,forwardPE:19,yield10y:4.0,debtGrowth:8,sp500:24},
+  {year:2024,buffett10:20.5,forwardPE:22,yield10y:4.3,debtGrowth:7,sp500:15},
+  {year:2025,buffett10:22.0,forwardPE:23,yield10y:4.4,debtGrowth:6,sp500:12},
+  {year:2026,buffett10:23.2,forwardPE:22,yield10y:4.5,debtGrowth:6,sp500:10}
+];
+
+const x = data.map(d => d.year);
+
+// LEFT AXIS (valuation + liquidity)
+const leftAxis = [
+  {
+    x,
+    y: data.map(d => d.buffett10),
+    name: "Buffett ÷ 10",
+    type: "scatter",
+    line: {width: 3}
+  },
+  {
+    x,
+    y: data.map(d => d.forwardPE),
+    name: "Forward P/E",
+    type: "scatter",
+    line: {width: 3}
+  },
+  {
+    x,
+    y: data.map(d => d.debtGrowth),
+    name: "US Debt Growth %",
+    type: "scatter",
+    line: {width: 2, dash: "dot"}
+  }
+];
+
+// RIGHT AXIS (rates + returns)
+const rightAxis = [
+  {
+    x,
+    y: data.map(d => d.yield10y),
+    name: "10Y Treasury Yield",
+    type: "scatter",
+    yaxis: "y2",
+    line: {width: 3}
+  },
+  {
+    x,
+    y: data.map(d => d.sp500),
+    name: "S&P 500 Return %",
+    type: "scatter",
+    yaxis: "y2",
+    line: {width: 3, dash: "dash"}
+  }
+];
+
+Plotly.newPlot("chart", [...leftAxis, ...rightAxis], {
+  paper_bgcolor: "#0b0f19",
+  plot_bgcolor: "#0b0f19",
+
+  title: "Macro Dual-Axis Finance Dashboard",
+
+  xaxis: {
+    title: "Year",
+    gridcolor: "#222"
+  },
+
+  yaxis: {
+    title: "Valuation / Liquidity (Scaled Index)",
+    gridcolor: "#222"
+  },
+
+  yaxis2: {
+    title: "Rates / Returns (%)",
+    overlaying: "y",
+    side: "right"
+  },
+
+  legend: {
+    orientation: "h"
+  }
+});
+
+</script>
+</body>
+</html>
